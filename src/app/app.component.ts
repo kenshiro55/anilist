@@ -12,7 +12,7 @@ import { DOCUMENT } from '@angular/common';
 export class AppComponent implements AfterViewInit {
 	title = 'anilist';
   
-	constructor() { 
+	constructor(private router: Router) { 
     }
   
 	
@@ -43,10 +43,11 @@ export class AppComponent implements AfterViewInit {
 		let token = localStorage.getItem("token")
 
 		if(token) {
-			console.log(1)
+			//console.log(1)
+			this.router.navigate(['library'])
 			// redirect library
 		} else {
-			console.log(2)
+			//console.log(2)
 			// redirect login
 			window.location.href = 'https://anilist.co/api/v2/oauth/authorize?client_id=3749&response_type=token'
 		}
