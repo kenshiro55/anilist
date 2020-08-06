@@ -1,7 +1,7 @@
 <mat-drawer-container class="lib-container">
     <mat-drawer mode="side" opened disableClose="true">
 
-        <mat-button-toggle-group vertical (change)="changeStatus($event)">
+        <mat-button-toggle-group vertical (change)="changeStatus($event)" style="min-width : 200px">
             <mat-button-toggle value="" checked>All</mat-button-toggle>
             <!--<mat-button-toggle value="CURRENT">Watching</mat-button-toggle>
             <mat-button-toggle value="COMPLETED">Completed</mat-button-toggle>
@@ -49,7 +49,7 @@
                         </mat-form-field>
                     </div>
 
-                    <mat-table [dataSource]="dataSource" *ngIf="dataSource">
+                    <mat-table [dataSource]="dataSource" *ngIf="dataSource" >
                         <ng-container matColumnDef="cover">
                             <mat-header-cell *matHeaderCellDef></mat-header-cell>
                             <mat-cell *matCellDef="let element">
@@ -82,10 +82,21 @@
                             </mat-footer-cell>
                         </ng-container>
 
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <button mat-icon-button color="primary" (click)="deleteAnime($event, element.id)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </mat-cell>
+                            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                        </ng-container>
+
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns"
-                            (mouseover)="mouseOverRow(row)"
+                        <mat-row *matRowDef="let row; columns: displayedColumns; let index=index" #tableRow
+                            (mouseover)="mouseOverRow(index, row)"
                             (mouseleave)="mouseLeaveRow(row)"
+                            (click)="openDetail(row)"
                             ></mat-row>
                         <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
                     </mat-table>
@@ -94,3 +105,6 @@
 
     </mat-drawer-content>
 </mat-drawer-container>
+
+<img class="selectionCover" [ngStyle]="{'left':selectionCoverLeft, 'top': selectionCoverTop}"
+[src]="selectionCover" *ngIf="selectionCover">

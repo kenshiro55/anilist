@@ -1,0 +1,33 @@
+::ng-deep  .mat-dialog-container {
+    padding: 0px !important
+}
+
+.banner {
+    position: relative;
+    height: 150px;
+    width: 100%;
+}
+
+.banner > div {
+    height: 100%;
+    width: 100%;
+    background-color: #000000;
+    opacity: .35;
+}
+
+.cover {
+    position: relative;
+    height: 150px;
+    margin-top: -120px;
+    margin-left: 20px;
+}
+
+.close {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+}
+
+.mat-dialog-content {
+    margin: 10px;
+}

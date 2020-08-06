@@ -42,8 +42,9 @@ export interface Media {
     "format": string,
     "siteUrl": string,
     "status": string,
-    "coverImage": Cover
-    "title": Title
+    "coverImage": Cover,
+    "title": Title,
+    "bannerImage": string
 }
 
 export interface Cover {

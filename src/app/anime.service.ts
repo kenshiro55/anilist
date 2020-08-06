@@ -47,7 +47,7 @@ export class AnimeService {
       '        id, mediaId, status, score(format:POINT_100), progress, private, ' +
       '        startedAt {year, month, day}, completedAt {year, month, day}, ' +
       '        updatedAt, notes, repeat, media { ' +
-      '          title{userPreferred, romaji}, siteUrl, episodes, coverImage{large}, format, status ' +
+      '          title{userPreferred, romaji}, siteUrl, episodes, coverImage{large}, format, status, bannerImage ' +
       '        }' +
       '      }' +
       '    }' +
@@ -136,11 +136,51 @@ export class AnimeService {
         }
         throwError("Already added")
       })
+    )
+  }
 
+  public updateAnime(id: number, status: string, score: number, progress: number) {
+    const bodyMutation = '{"query":"mutation { ' +
+      `  SaveMediaListEntry(id:${id}, status:${status}, progress:${progress}, scoreRaw:${score}) {` +
+      '    id, status, score, progress' +
+      '  }' +
+      '}", "variables":null}'
+    const token = localStorage.getItem("token")
+
+    return this.httpClient.post(URL,
+      bodyMutation,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        observe: 'body',
+        responseType: 'json'
+      }
+    )
+  }
+
+  public deleteAnime(id: number) {
+    const bodyMutation = '{"query":"mutation { ' +
+      `  DeleteMediaListEntry(id:${id}) {` +
+      '    deleted' +
+      '  }' +
+      '}", "variables":null}'
+    const token = localStorage.getItem("token")
+
+    return this.httpClient.post(URL,
+      bodyMutation,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        observe: 'body',
+        responseType: 'json'
+      }
     )
 
   }
-
 
 
 

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -20,23 +21,30 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatButtonToggleModule} from '@angular/material/button-toggle'; 
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatIconModule} from '@angular/material/icon';
-
+import { DetailComponent } from './detail/detail.component';
+import {MatSelectModule} from '@angular/material/select'; 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LibraryComponent
+    LibraryComponent,
+    DetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     MatButtonModule, MatDialogModule, MatTableModule, MatChipsModule, MatFormFieldModule, MatInputModule,
-    MatAutocompleteModule, MatCardModule, MatSidenavModule,MatButtonToggleModule, MatBadgeModule, MatIconModule
+    MatAutocompleteModule, MatCardModule, MatSidenavModule,MatButtonToggleModule, MatBadgeModule, MatIconModule,
+    MatSelectModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    DetailComponent
+  ]
 })
 export class AppModule { }
