@@ -64,6 +64,33 @@
                             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
                         </ng-container>
 
+                        <ng-container matColumnDef="score">
+                            <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <span class="score-container">
+                                    <span>
+                                        <mat-icon class="mat-icon-score material-icons-outlined">grade</mat-icon>
+                                        <mat-icon class="mat-icon-score material-icons-outlined">grade</mat-icon>
+                                        <mat-icon class="mat-icon-score material-icons-outlined">grade</mat-icon>
+                                        <mat-icon class="mat-icon-score material-icons-outlined">grade</mat-icon>
+                                        <mat-icon class="mat-icon-score material-icons-outlined">grade</mat-icon>
+                                    </span>
+                                    
+                                    <span style="width: 85px" [ngStyle]="{'width': element.score ? element.score + 'px': '0px'}">
+                                        <mat-icon class="mat-icon-score" color="primary">grade</mat-icon>
+                                        <mat-icon class="mat-icon-score" color="primary">grade</mat-icon>
+                                        <mat-icon class="mat-icon-score" color="primary">grade</mat-icon>
+                                        <mat-icon class="mat-icon-score" color="primary">grade</mat-icon>
+                                        <mat-icon class="mat-icon-score" color="primary">grade</mat-icon>
+                                    </span>
+    
+                                </span>
+
+                                
+                                </mat-cell>
+                            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                        </ng-container>
+
                         <ng-container matColumnDef="progress">
                             <mat-header-cell *matHeaderCellDef>Progress</mat-header-cell>
                             <mat-cell *matCellDef="let element">

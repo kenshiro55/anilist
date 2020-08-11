@@ -32,6 +32,10 @@ mat-card {
     flex: 0 0 70px;
 }
 
+.mat-column-score {
+    flex: 0 0 120px;
+}
+
 .mat-column-progress {
     flex: 0 0 100px;
 }
@@ -54,4 +58,23 @@ mat-card {
     width: 150px;
     height: 200px;
     z-index: 999;
+}
+
+.mat-icon-score {
+    width: 20px !important;
+}
+
+span.score-container {
+    position: relative;
+    height: 24px;
+}
+
+span.score-container > span {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 110px;
+    height:24px;
+    overflow: hidden;
+    white-space: nowrap;
 }

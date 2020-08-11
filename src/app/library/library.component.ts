@@ -35,7 +35,7 @@ export class LibraryComponent implements OnInit {
   selectionCoverLeft: string
   selectionCoverTop: string
 
-  displayedColumns = ["cover", "title", "progress", "actions"]
+  displayedColumns = ["cover", "title", "score", "progress", "actions"]
 
   constructor(private service: AnimeService, private changeDetectorRefs: ChangeDetectorRef,
     public dialog: MatDialog) { }
