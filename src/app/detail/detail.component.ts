@@ -30,9 +30,11 @@ export class DetailComponent implements OnInit {
     const score: number = this.formGroup.controls["score"].value
     const progress: number = this.formGroup.controls["progress"].value
 
-
     this.service.updateAnime(this.data.id, status, score, progress)
-      .subscribe(data => this.dialogRef.close({status: status, score: score, progress: progress}))
+      .subscribe(data => this.dialogRef.close({status: data["data"]["SaveMediaListEntry"]["status"], 
+                              score: +data["data"]["SaveMediaListEntry"]["score"], 
+                              progress: +data["data"]["SaveMediaListEntry"]["progress"]})
+        )
   }
 
 }

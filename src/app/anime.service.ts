@@ -142,7 +142,7 @@ export class AnimeService {
   public updateAnime(id: number, status: string, score: number, progress: number) {
     const bodyMutation = '{"query":"mutation { ' +
       `  SaveMediaListEntry(id:${id}, status:${status}, progress:${progress}, scoreRaw:${score}) {` +
-      '    id, status, score, progress' +
+      '    id, status, score(format: POINT_100), progress' +
       '  }' +
       '}", "variables":null}'
     const token = localStorage.getItem("token")
