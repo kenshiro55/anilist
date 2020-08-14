@@ -95,14 +95,15 @@
                             <mat-header-cell *matHeaderCellDef>Progress</mat-header-cell>
                             <mat-cell *matCellDef="let element">
                                 <mat-chip-list>
-                                    <mat-chip color="basic" selected>
+                                    <mat-chip color="basic" selected
+                                        matTooltip="{{ (element.progress * element.media.duration) | duration:'m':'d hh:MM' }}"  >
                                         {{element.progress}}/{{element.media.episodes ? element.media.episodes : "-"}}
                                     </mat-chip>
                                 </mat-chip-list>
                             </mat-cell>
                             <mat-footer-cell *matFooterCellDef>
                                 <mat-chip-list>
-                                    <mat-chip color="primary" selected>
+                                    <mat-chip color="primary" selected matTooltip="{{ getTotalTime() | duration:'m':'d hh:MM'}}">
                                         {{getTotalProgress()}}
                                     </mat-chip>
                                 </mat-chip-list>

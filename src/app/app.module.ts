@@ -22,14 +22,17 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatIconModule} from '@angular/material/icon';
 import { DetailComponent } from './detail/detail.component';
-import {MatSelectModule} from '@angular/material/select'; 
+import {MatSelectModule} from '@angular/material/select';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { DurationPipe } from './duration.pipe'; 
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LibraryComponent,
-    DetailComponent
+    DetailComponent,
+    DurationPipe
   ],
   imports: [
     BrowserModule,
@@ -39,7 +42,7 @@ import {MatSelectModule} from '@angular/material/select';
     ReactiveFormsModule,
     MatButtonModule, MatDialogModule, MatTableModule, MatChipsModule, MatFormFieldModule, MatInputModule,
     MatAutocompleteModule, MatCardModule, MatSidenavModule,MatButtonToggleModule, MatBadgeModule, MatIconModule,
-    MatSelectModule
+    MatSelectModule, MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent],

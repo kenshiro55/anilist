@@ -132,6 +132,19 @@ export class LibraryComponent implements OnInit {
     return count + "/" + totalCount
   }
 
+  getTotalTime() {
+    let total = 0
+
+    this.dataSource.filteredData.forEach(entry => {
+      if(entry.progress && entry.media.duration) {
+        total += (entry.progress * entry.media.duration)
+      }
+    })
+
+    return total
+  }
+
+
   mouseOverRow(index: number, row: Entry) {
     let rect = this.containers.toArray()[index].element.nativeElement.getBoundingClientRect()
     this.selectionCoverLeft = (rect.x - 150 - 5) + "px"
@@ -201,7 +214,6 @@ export class LibraryComponent implements OnInit {
       },
         error => console.log(error))
   }
-
 
   private createDataSource(entries: Entry[]) {
     this.entries = entries

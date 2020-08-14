@@ -47,7 +47,7 @@ export class AnimeService {
       '        id, mediaId, status, score(format:POINT_100), progress, private, ' +
       '        startedAt {year, month, day}, completedAt {year, month, day}, ' +
       '        updatedAt, notes, repeat, media { ' +
-      '          title{userPreferred, romaji}, siteUrl, episodes, coverImage{large}, format, status, bannerImage ' +
+      '          title{userPreferred, romaji}, siteUrl, episodes, coverImage{large}, format, status, bannerImage, duration ' +
       '        }' +
       '      }' +
       '    }' +

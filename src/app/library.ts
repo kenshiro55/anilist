@@ -44,7 +44,8 @@ export interface Media {
     "status": string,
     "coverImage": Cover,
     "title": Title,
-    "bannerImage": string
+    "bannerImage": string,
+    "duration": number
 }
 
 export interface Cover {
