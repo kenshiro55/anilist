@@ -78,3 +78,12 @@ span.score-container > span {
     overflow: hidden;
     white-space: nowrap;
 }
+
+.selectionData {
+    position: absolute;
+    z-index: 999;
+    background-color: black;
+    color: white;
+    padding: 8px;
+    opacity: 0.7;
+}

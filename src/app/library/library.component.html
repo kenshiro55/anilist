@@ -3,11 +3,6 @@
 
         <mat-button-toggle-group vertical (change)="changeStatus($event)" style="min-width : 200px">
             <mat-button-toggle value="" checked>All</mat-button-toggle>
-            <!--<mat-button-toggle value="CURRENT">Watching</mat-button-toggle>
-            <mat-button-toggle value="COMPLETED">Completed</mat-button-toggle>
-            <mat-button-toggle value="DROPPED">Dropped</mat-button-toggle>
-            <mat-button-toggle value="PLANNING">Planning</mat-button-toggle>
-            <mat-button-toggle value="PAUSED">Paused</mat-button-toggle>-->
             <mat-button-toggle *ngFor="let status of statuses" value="{{status.code}}">
                 {{ status.name }}
             </mat-button-toggle>
@@ -35,13 +30,30 @@
                                     <button mat-icon-button color="primary" style="float:right" (click)="addAnime(media.id)">
                                         <mat-icon>add_circle_outline</mat-icon>
                                     </button>
-
                                 </mat-option>
                               </mat-autocomplete>
                         </mat-form-field>
                     </div>
 
                     <div style="margin-left: auto; margin-right: 0px; width: 50%">
+                        <div style="display: flex; justify-content: flex-end">
+                            <mat-form-field>
+                                <mat-label>From</mat-label>
+                                <mat-select (selectionChange)="changeFromYear($event)">
+                                    <mat-option value=""></mat-option>
+                                    <mat-option *ngFor="let year of filterMinYears" [value]="year">{{year}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+        
+                            <mat-form-field>
+                                <mat-label>To</mat-label>
+                                <mat-select (selectionChange)="changeToYear($event)">
+                                    <mat-option value=""></mat-option>
+                                    <mat-option *ngFor="let year of filterMaxYears" [value]="year">{{year}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
                         <mat-form-field style="width: 100%">
                             <mat-label>Filter</mat-label>
                             <!--<input type="text" matInput (keyup)="applyFilter($event)">-->
@@ -136,3 +148,9 @@
 
 <img class="selectionCover" [ngStyle]="{'left':selectionCoverLeft, 'top': selectionCoverTop}"
 [src]="selectionCover" *ngIf="selectionCover">
+
+
+<div class="selectionData" [ngStyle]="{'left':selectionDataLeft, 'top': selectionDataTop}"
+*ngIf="selectionData" [innerHtml]="selectionData">
+    
+</div>

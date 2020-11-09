@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, ViewChildren, ViewContainerRef } from '@angular/core';
 import { AnimeService } from '../anime.service'
 import { User } from '../user'
-import { tap, switchMap, flatMap, filter, toArray, map, debounce, debounceTime, distinctUntilChanged } from 'rxjs/operators'
+import { tap, switchMap, filter, map, debounceTime, distinctUntilChanged } from 'rxjs/operators'
 import { Entry, Status } from '../library';
-import { MatTableDataSource, MatTable, MatRow } from '@angular/material/table';
-import {  fromEvent, Observable, of } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import {  fromEvent,  of } from 'rxjs';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MediaSearch } from '../search';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { DetailComponent } from '../detail/detail.component';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-library',
@@ -21,11 +22,19 @@ export class LibraryComponent implements OnInit {
   @ViewChild('nameFilterInput', { static: true }) nameFilterInput: ElementRef;
   @ViewChildren("tableRow", { read: ViewContainerRef }) containers;
   
-
   private user: User
   filterStatus = ""
   private filterName = ""
   filteredAnimes: MediaSearch[]
+
+  minYear: number
+  maxYear: number
+
+  filterMinYear: number
+  filterMaxYear: number
+
+  filterMinYears: number[]
+  filterMaxYears: number[]
 
   statuses: Status[] = []
   entries: Entry[]
@@ -34,6 +43,10 @@ export class LibraryComponent implements OnInit {
   selectionCover: string
   selectionCoverLeft: string
   selectionCoverTop: string
+
+  selectionData: any
+  selectionDataLeft: string
+  selectionDataTop: string
 
   displayedColumns = ["cover", "title", "score", "progress", "actions"]
 
@@ -45,21 +58,6 @@ export class LibraryComponent implements OnInit {
       .pipe(
         tap(user => this.user = user),
         switchMap(user => this.service.getLibrary(user.id)),
-        /*flatMap(library => library.data.MediaListCollection.lists),
-        filter(lists => lists.isCustomList === false),
-        tap(lists => {
-          if(lists.entries.length > 0) {
-            const name = lists.name
-            const code = lists.entries[0].status
-            const count = lists.entries.length
-            this.statuses.push({name: name, code: code, count: count})
-          }
-        }),
-        map(lists => lists.entries),
-        flatMap(entries => entries),
-        toArray(),
-        map(entries => entries.sort((entry1, entry2) =>
-          entry1.media.title.userPreferred.localeCompare(entry2.media.title.userPreferred)))*/
         map(library => {
           let entries: Entry[] = []
 
@@ -75,6 +73,17 @@ export class LibraryComponent implements OnInit {
               entries.push(...list.entries)
             }
           })
+
+          entries.forEach(entry => {
+            if(!this.minYear || this.minYear > entry.media.seasonYear) {
+              this.minYear = entry.media.seasonYear
+            }
+            if(!this.maxYear || this.maxYear < entry.media.seasonYear) {
+              this.maxYear = entry.media.seasonYear
+            }
+          })
+
+          this.initYearLists()
 
           entries.sort((entry1, entry2) =>
             entry1.media.title.userPreferred.localeCompare(entry2.media.title.userPreferred))
@@ -110,7 +119,9 @@ export class LibraryComponent implements OnInit {
           this.filterName = text.trim().toLowerCase()
           this.dataSource.filter = JSON.stringify({
             status: this.filterStatus,
-            name: this.filterName
+            name: this.filterName,
+            from: this.filterMinYear,
+            to: this.filterMaxYear
           })
         })        
       })
@@ -150,9 +161,18 @@ export class LibraryComponent implements OnInit {
     this.selectionCoverLeft = (rect.x - 150 - 5) + "px"
     this.selectionCoverTop = (rect.y - 100 + (rect.height/2)) + "px"
     this.selectionCover = row.media.coverImage.large
+
+    this.selectionData = `Title: ${row.media.title.romaji}<br>
+    Year: ${row.media.seasonYear}<br>
+    Note: ${row.score}/100`
+
+    this.selectionDataLeft = rect.x + "px"
+    this.selectionDataTop = (rect.y - 100 + (rect.height/2)) + "px"
+
   }
   mouseLeaveRow(row: Entry) {
     this.selectionCover = null
+    this.selectionData = null
   }
 
   openDetail(row: Entry) {
@@ -191,7 +211,9 @@ export class LibraryComponent implements OnInit {
     this.filterStatus = event.value
     this.dataSource.filter = JSON.stringify({
       status: this.filterStatus,
-      name: this.filterName
+      name: this.filterName,
+      from: this.filterMinYear,
+      to: this.filterMaxYear
     })
   }
 
@@ -228,6 +250,13 @@ export class LibraryComponent implements OnInit {
       if (filt.name !== "") {
         value = value && entry.media.title.userPreferred.toLowerCase().indexOf(filt.name) >= 0
       }
+      if(filt.from) {
+        value = value && entry.media.seasonYear >= filt.from
+      }
+      if(filt.to) {
+        value = value && entry.media.seasonYear <= filt.to
+      }
+
       return value
     }
   }
@@ -264,6 +293,54 @@ export class LibraryComponent implements OnInit {
         this.createDataSource(entries)
       })        
 
+  }
+
+  changeFromYear(event: MatSelectChange) {
+    this.filterMinYear = typeof event.value === "number" 
+                          ? event.value
+                          : undefined
+
+    this.initYearLists()
+
+    this.dataSource.filter = JSON.stringify({
+      status: this.filterStatus,
+      name: this.filterName,
+      from: this.filterMinYear,
+      to: this.filterMaxYear
+    })
+  }
+
+  changeToYear(event: MatSelectChange) {
+    this.filterMaxYear = typeof event.value === "number" 
+                          ? event.value
+                          : undefined
+
+    this.initYearLists()
+
+    this.dataSource.filter = JSON.stringify({
+      status: this.filterStatus,
+      name: this.filterName,
+      from: this.filterMinYear,
+      to: this.filterMaxYear
+    })
+  }
+
+  private initYearLists() {
+    let min = []
+    let max = []
+
+    let from = this.filterMinYear === undefined ? this.minYear : this.filterMinYear
+    let to = this.filterMaxYear === undefined ? this.maxYear : this.filterMaxYear
+
+    for(let y = this.minYear; y <= to; y++) {
+      min.push(y)
+    }
+    for(let y = from; y <= this.maxYear; y++) {
+      max.push(y)
+    }
+
+    this.filterMinYears = min
+    this.filterMaxYears = max
   }
 
 }

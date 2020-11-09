@@ -45,7 +45,8 @@ export interface Media {
     "coverImage": Cover,
     "title": Title,
     "bannerImage": string,
-    "duration": number
+    "duration": number,
+    "seasonYear": number
 }
 
 export interface Cover {
